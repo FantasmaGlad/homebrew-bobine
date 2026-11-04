@@ -1,0 +1,89 @@
+# Reprend la dernière release Stable de Bobine et réécrit le cask. Toutes les heures. Si le cask a changé, il est
+# d'abord installé sur un vrai macOS depuis un tap local, et publié seulement ensuite : un cask cassé n'atteint
+# jamais le tap.
+name: mise-a-jour
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mise-a-jour-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  cask:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      change: ${{ steps.reprendre.outputs.change }}
+      version: ${{ steps.reprendre.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Tests du générateur
+        run: python3 -m unittest discover -s scripts -p 'test_*.py' -q
+      - name: Reprendre la release Stable
+        id: reprendre
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag=$(gh release view --repo FantasmaGlad/Bobine --json tagName --jq .tagName)
+          gh release download "$tag" --repo FantasmaGlad/Bobine --pattern SHA256SUMS --dir "$RUNNER_TEMP" --clobber
+          python3 scripts/cask.py "$RUNNER_TEMP/SHA256SUMS" "$tag" > Casks/bobine.rb
+          echo "version=${tag#V}" >> "$GITHUB_OUTPUT"
+          if git status --porcelain | grep -q .; then echo "change=true" >> "$GITHUB_OUTPUT"; fi
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: cask
+          path: Casks/
+          retention-days: 1
+
+  essai:
+    needs: cask
+    if: needs.cask.outputs.change == 'true' || github.event_name != 'schedule'
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: cask
+          path: cask
+      # Homebrew n'installe un cask que depuis un tap : un tap local reçoit celui qui va être publié.
+      - name: Installer le cask
+        run: |
+          brew tap-new --no-git essai/bobine
+          mkdir -p "$(brew --repository essai/bobine)/Casks"
+          cp cask/bobine.rb "$(brew --repository essai/bobine)/Casks/"
+          brew install --cask essai/bobine/bobine
+          test -d /Applications/Bobine.app
+          brew uninstall --cask bobine
+
+  publication:
+    needs: [cask, essai]
+    if: needs.cask.outputs.change == 'true' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: cask
+          path: Casks
+      - name: Publier
+        env:
+          VERSION: ${{ needs.cask.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Casks
+          git commit -m "feat(cask): passer en $VERSION"
+          git push
