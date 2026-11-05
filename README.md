@@ -6,7 +6,7 @@ Homebrew tap for [Bobine](https://bobine.fit) on Apple Silicon Macs:
 brew install --cask fantasmaglad/bobine/bobine
 ```
 
-The cask follows the latest Stable release; it is installed on macOS in CI before being published.
+From Bobine 5.1.0 the cask also links the `bobine` command (`bobine status`, `bobine diagnose`, `bobine --help`). The cask follows the latest Stable release; it is installed on macOS in CI before being published.
 
 ## Download Bobine
 
