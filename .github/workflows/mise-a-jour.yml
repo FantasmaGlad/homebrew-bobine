@@ -63,6 +63,9 @@ jobs:
           cp cask/bobine.rb "$(brew --repository essai/bobine)/Casks/"
           brew install --cask essai/bobine/bobine
           test -d /Applications/Bobine.app
+          if grep -q '^  binary ' cask/bobine.rb; then
+            bobine --version | grep '^bobine '
+          fi
           brew uninstall --cask bobine
 
   publication:

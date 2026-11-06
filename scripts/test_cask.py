@@ -12,6 +12,11 @@ class CaskTests(unittest.TestCase):
         self.assertIn(f'sha256 "{"a" * 64}"', text)
         self.assertIn("depends_on arch: :arm64", text)
 
+    def test_command_is_linked_from_5_1_0(self):
+        self.assertIn('binary "#{appdir}/Bobine.app/Contents/MacOS/BobineTray", target: "bobine"', cask(SUMS, "V9.9.9"))
+        old = "a" * 64 + "  Bobine-5.0.7.dmg\n"
+        self.assertNotIn("binary", cask(old, "V5.0.7"))
+
     def test_rolling_tag_or_missing_image_is_refused(self):
         with self.assertRaises(SystemExit):
             cask(SUMS, "canary")
