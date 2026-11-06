@@ -1,6 +1,6 @@
 cask "bobine" do
-  version "5.0.7"
-  sha256 "f48504717bde641fc0b7f30fa9b88b79b42e43dcf59e2080e3c1f3bdd332abea"
+  version "5.1.0"
+  sha256 "53bc780a4580f1846579f0a5468554f39b71c77c77f3cc20643357e9588cdbb8"
 
   url "https://github.com/FantasmaGlad/Bobine/releases/download/V#{version}/Bobine-#{version}.dmg"
   name "Bobine"
@@ -15,4 +15,5 @@ cask "bobine" do
   depends_on arch: :arm64
 
   app "Bobine.app"
+  binary "#{appdir}/Bobine.app/Contents/MacOS/BobineTray", target: "bobine"
 end
