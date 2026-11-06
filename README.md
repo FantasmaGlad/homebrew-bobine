@@ -4,7 +4,8 @@ Homebrew tap for [Bobine](https://bobine.fit) on Apple Silicon Macs:
 
 ```bash
 brew install --cask fantasmaglad/bobine/bobine
-brew install --cask fantasmaglad/bobine/bobine-assistant   # install assistant for a dedicated mini PC
+# install assistant for a dedicated mini PC
+brew install --cask fantasmaglad/bobine/bobine-assistant
 ```
 
 The assistant cask follows the assistant's own Stable release (`assistant-Vx.y.z`), links the `bobine-assistant` command and updates itself. From Bobine 5.1.0 the cask also links the `bobine` command (`bobine status`, `bobine diagnose`, `bobine --help`). The cask follows the latest Stable release; it is installed on macOS in CI before being published.
