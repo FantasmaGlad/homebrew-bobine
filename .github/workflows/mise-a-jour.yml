@@ -1,6 +1,6 @@
-# Reprend les dernières releases Stable de Bobine et de Bobine Deploy et réécrit les casks. Toutes les six heures. Si le cask a changé, il est
-# d'abord installé sur un vrai macOS depuis un tap local, et publié seulement ensuite : un cask cassé n'atteint
-# jamais le tap.
+# Reprend les dernières releases Stable de Bobine et de Bobine Deploy et réécrit les casks, toutes les six heures.
+# Un cask modifié est d'abord installé sur un vrai macOS depuis un tap local, et publié seulement ensuite : un cask
+# cassé n'atteint jamais le tap.
 name: mise-a-jour
 
 on:
