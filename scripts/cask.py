@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Écrit le cask Bobine, ou celui de l'assistant d'installation, pour une release Stable, à partir de son SHA256SUMS.
+"""Écrit le cask Bobine, ou celui de Bobine Deploy, pour une release Stable, à partir de son SHA256SUMS.
 
-Usage : cask.py <SHA256SUMS> <tag Vx.y.z>                      (cask bobine, sur stdout)
-        cask.py assistant <SHA256SUMS> <tag assistant-Vx.y.z>   (cask bobine-assistant, sur stdout)
+Usage : cask.py <SHA256SUMS> <tag Vx.y.z>              (cask bobine, sur stdout)
+        cask.py deploy <SHA256SUMS> <tag vx.y.z>       (cask bobine-deploy, dépôt FantasmaGlad/bobine-deploy, sur stdout)
 """
 import re
 import sys
@@ -56,39 +56,39 @@ def digest_of(sums_text: str, name: str) -> str:
     raise SystemExit(f"{name} absent de SHA256SUMS")
 
 
-def assistant_cask(sums_text: str, tag: str) -> str:
-    """L'assistant a sa propre release par Stable (assistant-Vx.y.z), jamais « Latest » : voir le dépôt Bobine."""
-    if not re.fullmatch(r"assistant-V\d+\.\d+\.\d+", tag):
-        raise SystemExit(f"tag Stable de l'assistant attendu (assistant-Vx.y.z) : {tag}")
-    version = tag.removeprefix("assistant-V")
-    digest = digest_of(sums_text, f"Bobine-Assistant-{version}-arm64.dmg")
-    return f'''cask "bobine-assistant" do
-  version "{version}"
-  sha256 "{digest}"
+def deploy_cask(sums_text: str, tag: str) -> str:
+    """Bobine Deploy a son propre dépôt et ses tags vx.y.z ; une image par architecture."""
+    if not re.fullmatch(r"v\d+\.\d+\.\d+", tag):
+        raise SystemExit(f"tag Stable de Bobine Deploy attendu (vx.y.z) : {tag}")
+    version = tag[1:]
+    arm = digest_of(sums_text, f"Bobine-Deploy-{version}-arm64.dmg")
+    intel = digest_of(sums_text, f"Bobine-Deploy-{version}-x64.dmg")
+    return f'''cask "bobine-deploy" do
+  arch arm: "arm64", intel: "x64"
 
-  url "https://github.com/FantasmaGlad/Bobine/releases/download/assistant-V#{{version}}/Bobine-Assistant-#{{version}}-arm64.dmg"
-  name "Bobine Assistant"
-  desc "Installs Bobine on a dedicated mini PC over SSH"
-  homepage "https://bobine.fit"
+  version "{version}"
+  sha256 arm:   "{arm}",
+         intel: "{intel}"
+
+  url "https://github.com/FantasmaGlad/bobine-deploy/releases/download/v#{{version}}/Bobine-Deploy-#{{version}}-#{{arch}}.dmg"
+  name "Bobine Deploy"
+  desc "Install and maintain Bobine on the machines of your network"
+  homepage "https://github.com/FantasmaGlad/bobine-deploy"
 
   livecheck do
-    url "https://github.com/FantasmaGlad/Bobine/releases"
-    regex(/assistant-V(\d+(?:\.\d+)+)/i)
-    strategy :page_match
+    url :url
+    strategy :github_latest
   end
 
-  auto_updates true
-  depends_on arch: :arm64
-
-  app "Bobine Assistant.app"
-  binary "#{{appdir}}/Bobine Assistant.app/Contents/MacOS/bobine-assistant"
+  app "Bobine Deploy.app"
+  binary "#{{appdir}}/Bobine Deploy.app/Contents/MacOS/bobine-deploy"
 end
 '''
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 4 and sys.argv[1] == "assistant":
-        sys.stdout.write(assistant_cask(Path(sys.argv[2]).read_text(encoding="utf-8"), sys.argv[3]))
+    if len(sys.argv) == 4 and sys.argv[1] == "deploy":
+        sys.stdout.write(deploy_cask(Path(sys.argv[2]).read_text(encoding="utf-8"), sys.argv[3]))
     elif len(sys.argv) == 3:
         sys.stdout.write(cask(Path(sys.argv[1]).read_text(encoding="utf-8"), sys.argv[2]))
     else:

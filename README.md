@@ -1,14 +1,14 @@
 # homebrew-bobine
 
-Homebrew tap for [Bobine](https://bobine.fit) on Apple Silicon Macs:
+Homebrew tap for [Bobine](https://bobine.fit) and [Bobine Deploy](https://github.com/FantasmaGlad/bobine-deploy):
 
 ```bash
 brew install --cask fantasmaglad/bobine/bobine
-# install assistant for a dedicated mini PC
-brew install --cask fantasmaglad/bobine/bobine-assistant
+# remote installation on a dedicated mini PC (Apple Silicon and Intel)
+brew install --cask fantasmaglad/bobine/bobine-deploy
 ```
 
-The assistant cask follows the assistant's own Stable release (`assistant-Vx.y.z`), links the `bobine-assistant` command and updates itself. From Bobine 5.1.0 the cask also links the `bobine` command (`bobine status`, `bobine diagnose`, `bobine --help`). The cask follows the latest Stable release; it is installed on macOS in CI before being published.
+The `bobine` cask needs Apple Silicon. The `bobine-deploy` cask follows the latest release of its own repository and links the `bobine-deploy` command; it replaces the former `bobine-assistant` cask. From Bobine 5.1.0 the `bobine` cask also links the `bobine` command (`bobine status`, `bobine diagnose`, `bobine --help`). Each cask follows the latest Stable release of its repository; it is installed on macOS in CI before being published.
 
 ## Download Bobine
 
@@ -23,4 +23,4 @@ The assistant cask follows the assistant's own Stable release (`assistant-Vx.y.z
 
 All channels (Stable, Beta, Canary) and one-line commands, including through Tor: [Bobine README](https://github.com/FantasmaGlad/Bobine#download--install).
 
-<sub>Related repositories: [Bobine](https://github.com/FantasmaGlad/Bobine) (application) · [BobineWeb](https://github.com/FantasmaGlad/BobineWeb) (website) · [bobine-packages](https://github.com/FantasmaGlad/bobine-packages) (Linux package repositories) · Security: [security.bobine.fit](https://security.bobine.fit), [security.txt](https://bobine.fit/.well-known/security.txt) · Contributing: [Bobine](https://github.com/FantasmaGlad/Bobine/blob/main/CONTRIBUTING.md)</sub>
+<sub>Related repositories: [Bobine](https://github.com/FantasmaGlad/Bobine) (application) · [BobineWeb](https://github.com/FantasmaGlad/BobineWeb) (website) · [bobine-packages](https://github.com/FantasmaGlad/bobine-packages) (Linux package repositories) · [bobine-deploy](https://github.com/FantasmaGlad/bobine-deploy) (remote installation) · Security: [security.bobine.fit](https://security.bobine.fit), [security.txt](https://bobine.fit/.well-known/security.txt) · Contributing: [Bobine](https://github.com/FantasmaGlad/Bobine/blob/main/CONTRIBUTING.md)</sub>

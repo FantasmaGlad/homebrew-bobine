@@ -38,13 +38,12 @@ jobs:
           gh release download "$tag" --repo FantasmaGlad/Bobine --pattern SHA256SUMS --dir "$RUNNER_TEMP" --clobber
           python3 scripts/cask.py "$RUNNER_TEMP/SHA256SUMS" "$tag" > Casks/bobine.rb
           echo "version=${tag#V}" >> "$GITHUB_OUTPUT"
-          # L'assistant a sa propre release par Stable (assistant-Vx.y.z, jamais « Latest ») : la plus récente, s'il y en a.
-          assistant=$(gh release list --repo FantasmaGlad/Bobine --limit 100 --json tagName,publishedAt \
-            --jq '[.[] | select(.tagName | test("^assistant-V[0-9]+\\.[0-9]+\\.[0-9]+$"))] | sort_by(.publishedAt) | last | .tagName // empty')
-          if [ -n "$assistant" ]; then
-            mkdir -p "$RUNNER_TEMP/assistant"
-            gh release download "$assistant" --repo FantasmaGlad/Bobine --pattern SHA256SUMS --dir "$RUNNER_TEMP/assistant" --clobber
-            python3 scripts/cask.py assistant "$RUNNER_TEMP/assistant/SHA256SUMS" "$assistant" > Casks/bobine-assistant.rb
+          # Bobine Deploy a son propre dépôt : sa dernière release Stable, s'il y en a une.
+          deploy=$(gh release view --repo FantasmaGlad/bobine-deploy --json tagName --jq .tagName 2>/dev/null || true)
+          if [ -n "$deploy" ]; then
+            mkdir -p "$RUNNER_TEMP/deploy"
+            gh release download "$deploy" --repo FantasmaGlad/bobine-deploy --pattern SHA256SUMS --dir "$RUNNER_TEMP/deploy" --clobber
+            python3 scripts/cask.py deploy "$RUNNER_TEMP/deploy/SHA256SUMS" "$deploy" > Casks/bobine-deploy.rb
           fi
           if git status --porcelain | grep -q .; then echo "change=true" >> "$GITHUB_OUTPUT"; fi
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -75,12 +74,12 @@ jobs:
             bobine --version | grep '^bobine '
           fi
           brew uninstall --cask bobine
-          if [ -f cask/bobine-assistant.rb ]; then
-            cp cask/bobine-assistant.rb "$(brew --repository essai/bobine)/Casks/"
-            brew install --cask essai/bobine/bobine-assistant
-            test -d "/Applications/Bobine Assistant.app"
-            bobine-assistant --json version | grep -q '"version"'
-            brew uninstall --cask bobine-assistant
+          if [ -f cask/bobine-deploy.rb ]; then
+            cp cask/bobine-deploy.rb "$(brew --repository essai/bobine)/Casks/"
+            brew install --cask essai/bobine/bobine-deploy
+            test -d "/Applications/Bobine Deploy.app"
+            bobine-deploy --json version | grep -q '"version"'
+            brew uninstall --cask bobine-deploy
           fi
 
   publication:
