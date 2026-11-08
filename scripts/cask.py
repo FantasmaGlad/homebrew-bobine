@@ -82,6 +82,7 @@ def deploy_cask(sums_text: str, tag: str) -> str:
 
   app "Bobine Deploy.app"
   binary "#{{appdir}}/Bobine Deploy.app/Contents/MacOS/bobine-deploy"
+  binary "#{{appdir}}/Bobine Deploy.app/Contents/MacOS/bobine-deploy", target: "bdp"
 end
 '''
 

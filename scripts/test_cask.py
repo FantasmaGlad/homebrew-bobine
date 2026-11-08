@@ -32,6 +32,7 @@ class CaskTests(unittest.TestCase):
         self.assertIn('intel: "' + "d" * 64 + '"', text)
         self.assertIn("bobine-deploy/releases/download/v#{version}/Bobine-Deploy-#{version}-#{arch}.dmg", text)
         self.assertIn('binary "#{appdir}/Bobine Deploy.app/Contents/MacOS/bobine-deploy"', text)
+        self.assertIn('MacOS/bobine-deploy", target: "bdp"', text)
         with self.assertRaises(SystemExit):
             deploy_cask(sums, "V5.1.1")
         with self.assertRaises(SystemExit):
