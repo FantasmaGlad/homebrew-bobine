@@ -1,9 +1,9 @@
 cask "bobine-deploy" do
   arch arm: "arm64", intel: "x64"
 
-  version "0.0.1"
-  sha256 arm:   "b426c8f78d135f17850efbe866335ee3933c8bfffda86a1ec89d9a012ee8d215",
-         intel: "1fdbb30df0e346ad41b2e0d12ad44ee45850c66ff2eac582a03952698f21bc87"
+  version "0.1.0"
+  sha256 arm:   "273620804121df929f8997576ce00ea9a1c8141f6b8a805b1f5a14cae977f685",
+         intel: "1ee4bdd08986ec7886333c8e6fd2e55535fce353eb08cfdc0b549f7c06555cd5"
 
   url "https://github.com/FantasmaGlad/bobine-deploy/releases/download/v#{version}/Bobine-Deploy-#{version}-#{arch}.dmg"
   name "Bobine Deploy"
@@ -17,4 +17,5 @@ cask "bobine-deploy" do
 
   app "Bobine Deploy.app"
   binary "#{appdir}/Bobine Deploy.app/Contents/MacOS/bobine-deploy"
+  binary "#{appdir}/Bobine Deploy.app/Contents/MacOS/bobine-deploy", target: "bdp"
 end
