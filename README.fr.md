@@ -2,10 +2,10 @@
 
 Tap Homebrew de [Bobine](https://github.com/FantasmaGlad/Bobine) et de [Bobine Deploy](https://github.com/FantasmaGlad/bobine-deploy). English: [README.md](README.md).
 
-```bash
-brew install --cask fantasmaglad/bobine/bobine          # Bobine, Apple Silicon
-brew install --cask fantasmaglad/bobine/bobine-deploy   # Bobine Deploy, Apple Silicon et Intel
-```
+| Cask | Commande | Prérequis |
+| :--- | :--- | :--- |
+| <img src="https://raw.githubusercontent.com/FantasmaGlad/Bobine/main/Assets/Icons/os/apple.svg" width="20" height="20" valign="middle" alt="macOS"> **Bobine** | `brew install --cask fantasmaglad/bobine/bobine` | Apple Silicon |
+| <img src="https://raw.githubusercontent.com/FantasmaGlad/Bobine/main/Assets/Icons/os/apple.svg" width="20" height="20" valign="middle" alt="macOS"> **Bobine Deploy** | `brew install --cask fantasmaglad/bobine/bobine-deploy` | Apple Silicon, Intel |
 
 Chaque cask suit la dernière release Stable de son dépôt et lie sa commande (`bobine`, `bobine-deploy`). Les casks sont générés par `scripts/cask.py` et installés sur macOS dans la CI avant publication. `bobine-deploy` remplace l'ancien cask `bobine-assistant`.
 
