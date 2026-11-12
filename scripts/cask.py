@@ -21,7 +21,6 @@ def cask(sums_text: str, tag: str) -> str:
             digest = match.group(1).lower()
     if digest is None:
         raise SystemExit(f"{name} absent de SHA256SUMS")
-    # La commande `bobine` existe depuis la 5.1.0 : BobineTray la sert quand il reçoit une sous-commande.
     major, minor, _ = (int(part) for part in version.split("."))
     command = (
         '\n  binary "#{appdir}/Bobine.app/Contents/MacOS/BobineTray", target: "bobine"'

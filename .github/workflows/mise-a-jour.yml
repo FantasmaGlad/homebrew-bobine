@@ -1,6 +1,3 @@
-# Reprend les dernières releases Stable de Bobine et de Bobine Deploy et réécrit les casks, toutes les six heures.
-# Un cask modifié est d'abord installé sur un vrai macOS depuis un tap local, et publié seulement ensuite : un cask
-# cassé n'atteint jamais le tap.
 name: mise-a-jour
 
 on:
@@ -41,7 +38,6 @@ jobs:
           gh release download "$tag" --repo FantasmaGlad/Bobine --pattern SHA256SUMS --dir "$RUNNER_TEMP" --clobber
           python3 scripts/cask.py "$RUNNER_TEMP/SHA256SUMS" "$tag" > Casks/bobine.rb
           echo "version=${tag#V}" >> "$GITHUB_OUTPUT"
-          # Bobine Deploy a son propre dépôt : sa dernière release Stable, s'il y en a une.
           deploy=$(gh release view --repo FantasmaGlad/bobine-deploy --json tagName --jq .tagName 2>/dev/null || true)
           if [ -n "$deploy" ]; then
             mkdir -p "$RUNNER_TEMP/deploy"
@@ -65,7 +61,6 @@ jobs:
         with:
           name: cask
           path: cask
-      # Homebrew n'installe un cask que depuis un tap : un tap local reçoit celui qui va être publié.
       - name: Installer le cask
         run: |
           brew tap-new --no-git essai/bobine
