@@ -1,6 +1,6 @@
 cask "bobine" do
-  version "5.2.0"
-  sha256 "7651e5036f1b52907502dc72ca81044ac207234e8d7407c3390ba3399cba12f4"
+  version "5.2.2"
+  sha256 "e27b9db5227c2e510fc93279e49faca3e05798ba62246d910845e56c47fabc40"
 
   url "https://github.com/FantasmaGlad/Bobine/releases/download/V#{version}/Bobine-#{version}.dmg"
   name "Bobine"
