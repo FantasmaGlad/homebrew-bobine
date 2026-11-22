@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://github.com/FantasmaGlad/Bobine"><b>Bobine</b></a> &nbsp;·&nbsp;
   <a href="https://github.com/FantasmaGlad/bobine-deploy"><b>Bobine Deploy</b></a> &nbsp;·&nbsp;
-  <a href="README.md"><b>English</b></a>
+  <a href="../../README.md"><b>English</b></a>
 </p>
 
 <p align="center">
@@ -31,6 +31,6 @@ Chaque cask suit la dernière release Stable et lie sa commande : `bobine`, `bob
 
 ---
 
-Licence : consultation seule, tous droits réservés ([LICENSE](LICENSE)) · Sécurité : [SECURITY.md](SECURITY.md) · Contribuer : [CONTRIBUTING.md](CONTRIBUTING.md)
+Licence : consultation seule, tous droits réservés ([LICENSE](../../LICENSE)) · Sécurité : [SECURITY.md](../SECURITY.md) · Contribuer : [CONTRIBUTING.md](../CONTRIBUTING.md)
 
 <sub>Dépôts liés : [Bobine](https://github.com/FantasmaGlad/Bobine) (application) · [bobine-deploy](https://github.com/FantasmaGlad/bobine-deploy) (installation à distance) · [BobineWeb](https://github.com/FantasmaGlad/BobineWeb) (site) · [bobine-packages](https://github.com/FantasmaGlad/bobine-packages) (dépôts de paquets Linux) · Politique de sécurité : [security.bobine.fit](https://security.bobine.fit/fr/), [`/.well-known/security.txt`](https://bobine.fit/.well-known/security.txt)</sub>
