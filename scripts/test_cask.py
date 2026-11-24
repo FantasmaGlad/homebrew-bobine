@@ -2,7 +2,7 @@ import unittest
 
 from cask import cask, deploy_cask
 
-SUMS = "a" * 64 + "  Bobine-9.9.9.dmg\n" + "b" * 64 + "  install.sh\n"
+SUMS = "a" * 64 + "  Bobine-9.9.9.dmg\n" + "b" * 64 + "  Bobine-Setup-9.9.9.exe\n"
 
 
 class CaskTests(unittest.TestCase):
@@ -21,7 +21,7 @@ class CaskTests(unittest.TestCase):
         with self.assertRaises(SystemExit):
             cask(SUMS, "canary")
         with self.assertRaises(SystemExit):
-            cask("b" * 64 + "  install.sh\n", "V9.9.9")
+            cask("b" * 64 + "  Bobine-Setup-9.9.9.exe\n", "V9.9.9")
 
 
     def test_deploy_cask_comes_from_its_own_repository(self):
